@@ -62,6 +62,20 @@ public class PowerManagement extends CordovaPlugin {
 		
 		try {
 			if( action.equals("acquire") ) {
+				String type = args.optString(0);
+				if(type.equals("dim") ) {
+					Log.d("PowerManagementPlugin", "Only dim lock" );
+					result = this.acquire( PowerManager.SCREEN_DIM_WAKE_LOCK );
+				}
+				else if(type.equals("partial") ) {
+					Log.d("PowerManagementPlugin", "Only partial lock" );
+					result = this.acquire( PowerManager.PARTIAL_WAKE_LOCK );
+				}
+				else {
+					Log.d("PowerManagementPlugin", "Full wakelock" );
+					result = this.acquire( PowerManager.FULL_WAKE_LOCK );
+				}
+					/*
 					if( args.length() > 0 && args.getBoolean(0) ) {
 						Log.d("PowerManagementPlugin", "Only dim lock" );
 						result = this.acquire( PowerManager.SCREEN_DIM_WAKE_LOCK );
@@ -69,6 +83,7 @@ public class PowerManagement extends CordovaPlugin {
 					else {
 						result = this.acquire( PowerManager.FULL_WAKE_LOCK );
 					}
+					*/
 			}
 			else if( action.equals("release") ) {
 				result = this.release();
