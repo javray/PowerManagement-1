@@ -89,7 +89,7 @@ public class PowerManagement extends CordovaPlugin {
 				result = this.release();
 			}
 		}
-		catch( JSONException e ) {
+		catch( Exception e ) {
 			result = new PluginResult(Status.JSON_EXCEPTION, e.getMessage());
 		}
 		
