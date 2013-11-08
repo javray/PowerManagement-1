@@ -7,7 +7,7 @@ It should be used for applications which keep running for a long time without an
 
 #Adding the Plugin to your project
 
-cordova plugin add https://github.com/raulduran/PowerManagement.git
+cordova plugin add https://github.com/javray/PowerManagement-1.git
 
 #Removing the Plugin to your project
 
