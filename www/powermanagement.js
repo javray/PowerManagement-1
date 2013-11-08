@@ -1,5 +1,4 @@
 
-
 	var exec = require("cordova/exec");
 
 	function PowerManagement() {}
@@ -31,8 +30,19 @@
 	 * @param errorCallback function to be called when there was a problem with acquiring the wake-lock
 	 */
 	PowerManagement.prototype.dim = function(successCallback,failureCallback) {
-		cordova.exec(successCallback, failureCallback, 'PowerManagement', 'acquire', [true]);
+		cordova.exec(successCallback, failureCallback, 'PowerManagement', 'acquire', ["dim"]);
 	};
+	
+	 /**
+     * Acquire a partial wake-lock, allowing the device to turn off the screen but keep the CPU active
+     *
+     * @param successCallback function to be called when the wake-lock was acquired successfully
+     * @param errorCallback function to be called when there was a problem with acquiring the wake-lock
+     */
+    PowerManagement.prototype.partial = function(successCallback,failureCallback) {
+        cordova.exec(successCallback, failureCallback, 'PowerManagement', 'acquire', ["partial"]);
+    }
+
 
 	var powerManagement = new PowerManagement();
 	module.exports = powerManagement;
