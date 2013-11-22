@@ -1,4 +1,3 @@
-
 	var exec = require("cordova/exec");
 
 	function PowerManagement() {}
@@ -41,6 +40,10 @@
      */
     PowerManagement.prototype.partial = function(successCallback,failureCallback) {
         cordova.exec(successCallback, failureCallback, 'PowerManagement', 'acquire', ["partial"]);
+    }
+    
+    PowerManagement.prototype.screen = function(successCallback,failureCallback) {
+        cordova.exec(successCallback, failureCallback, 'PowerManagement', 'acquire', ["screen"]);
     }
 
 
