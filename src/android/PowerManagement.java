@@ -71,6 +71,10 @@ public class PowerManagement extends CordovaPlugin {
 					Log.d("PowerManagementPlugin", "Only partial lock" );
 					result = this.acquire( PowerManager.PARTIAL_WAKE_LOCK );
 				}
+				else if(type.equals("screen") ) {
+					Log.d("PowerManagementPlugin", "Full wakelock with screen" );
+					result = this.acquire( PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP);
+				}
 				else {
 					Log.d("PowerManagementPlugin", "Full wakelock" );
 					result = this.acquire( PowerManager.FULL_WAKE_LOCK );
