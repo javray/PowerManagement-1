@@ -152,8 +152,9 @@ public class PowerManagement extends CordovaPlugin {
 	 */
 	@Override
 	public void onPause(boolean multitasking) {
-		if( this.wakeLock != null ) this.wakeLock.release();
-
+		if( this.wakeLock != null && this.wakeLock.isHeld()) {
+			this.wakeLock.release();
+		}
 		super.onPause(multitasking);
 	}
 	
