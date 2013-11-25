@@ -134,7 +134,7 @@ public class PowerManagement extends CordovaPlugin {
 	private PluginResult release() {
 		PluginResult result = null;
 		
-		if( this.wakeLock != null ) {
+		if( this.wakeLock != null && this.wakeLock.isHeld()) {
 			this.wakeLock.release();
 			this.wakeLock = null;
 			
