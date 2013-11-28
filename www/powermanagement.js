@@ -31,7 +31,7 @@
 	 */
 	PowerManagement.prototype.dim = function(successCallback,failureCallback) {
 		
-		cordova.exec(successCallback, failureCallback, 'PowerManagement', 'acquire', ["dim"]);
+		cordova.exec(successCallback, failureCallback, 'PowerManagement', 'acquire', ["dim", utils.createUUID()]);
 	};
 	
 	 /**
@@ -41,13 +41,13 @@
      * @param errorCallback function to be called when there was a problem with acquiring the wake-lock
      */
     PowerManagement.prototype.partial = function(successCallback,failureCallback) {
-        cordova.exec(successCallback, failureCallback, 'PowerManagement', 'acquire', ["partial"]);
+        cordova.exec(successCallback, failureCallback, 'PowerManagement', 'acquire', ["partial", utils.createUUID()]);
     }
     
     PowerManagement.prototype.screen = function(successCallback,failureCallback) {
-        cordova.exec(successCallback, failureCallback, 'PowerManagement', 'acquire', ["screen"]);
+        cordova.exec(successCallback, failureCallback, 'PowerManagement', 'acquire', ["screen", utils.createUUID()]);
     }
 
 
 	var powerManagement = new PowerManagement();
-	module.exports = PowerManagement;
+	module.exports = powerManagement;
