@@ -38,9 +38,6 @@ import org.apache.cordova.PluginResult.Status;
  * Plugin class which does the actual handling
  */
 public class PowerManagement extends CordovaPlugin {
-	// As we only allow one wake-lock, we keep a reference to it here
-	private PowerManager.WakeLock wakeLock = null;
-	private PowerManager powerManager = null;
 	
 	public HashMap<String, PowerManager.WakeLock> watches = new HashMap<String, CallbackContext>();
 	
