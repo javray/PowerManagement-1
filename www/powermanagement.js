@@ -10,7 +10,7 @@
 	 * @param errorCallback function to be called when there was a problem with acquiring the wake-lock
 	 */
 	PowerManagement.prototype.acquire = function(successCallback,failureCallback) {
-		cordova.exec(successCallback, failureCallback, 'PowerManagement', 'acquire', []);
+		cordova.exec(successCallback, failureCallback, 'PowerManagement', 'acquire', ['', utils.createUUID()]);
 	};
 
 	/**
