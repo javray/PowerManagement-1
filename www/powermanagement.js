@@ -1,4 +1,5 @@
-	var exec = require("cordova/exec");
+	var exec = require("cordova/exec"),
+	    utils = require('cordova/utils');
 
 	function PowerManagement() {}
 
@@ -18,8 +19,8 @@
 	 * @param successCallback function to be called when the wake-lock was released successfully
 	 * @param errorCallback function to be called when there was a problem while releasing the wake-lock
 	 */
-	PowerManagement.prototype.release = function(successCallback,failureCallback) {
-		cordova.exec(successCallback, failureCallback, 'PowerManagement', 'release', []);
+	PowerManagement.prototype.release = function(watchId, successCallback,failureCallback) {
+		cordova.exec(successCallback, failureCallback, 'PowerManagement', 'release', [watchId]);
 	};
 
 	/**
@@ -29,6 +30,7 @@
 	 * @param errorCallback function to be called when there was a problem with acquiring the wake-lock
 	 */
 	PowerManagement.prototype.dim = function(successCallback,failureCallback) {
+		
 		cordova.exec(successCallback, failureCallback, 'PowerManagement', 'acquire', ["dim"]);
 	};
 	
