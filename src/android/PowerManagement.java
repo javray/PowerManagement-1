@@ -42,7 +42,7 @@ public class PowerManagement extends CordovaPlugin {
 	private PowerManager.WakeLock wakeLock = null;
 	private PowerManager powerManager = null;
 	
-	public HashMap<PowerManager.WakeLock, CallbackContext> watches = new HashMap<PowerManager.WakeLock, CallbackContext>();
+	public HashMap<String, PowerManager.WakeLock> watches = new HashMap<String, CallbackContext>();
 
 
 	/**
@@ -51,8 +51,6 @@ public class PowerManagement extends CordovaPlugin {
 	@Override
 	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
 		super.initialize(cordova, webView);
-		
-		this.powerManager = (PowerManager) cordova.getActivity().getSystemService(Context.POWER_SERVICE);
 	}
 	
 	@Override
@@ -68,11 +66,11 @@ public class PowerManagement extends CordovaPlugin {
 				String type = args.optString(0);
 				if(type.equals("dim") ) {
 					Log.d("PowerManagementPlugin", "Only dim lock" );
-					result = this.acquire( PowerManager.SCREEN_DIM_WAKE_LOCK );
+					result = this.acquire( PowerManager.SCREEN_DIM_WAKE_LOCK);
 				}
 				else if(type.equals("partial") ) {
 					Log.d("PowerManagementPlugin", "Only partial lock" );
-					result = this.acquire( PowerManager.PARTIAL_WAKE_LOCK );
+					result = this.acquire( PowerManager.PARTIAL_WAKE_LOCK);
 				}
 				else if(type.equals("screen") ) {
 					Log.d("PowerManagementPlugin", "Full wakelock with screen" );
@@ -109,7 +107,7 @@ public class PowerManagement extends CordovaPlugin {
 	 * @param p_flags Type of wake-lock to acquire
 	 * @return PluginResult containing the status of the acquire process
 	 */
-	private PluginResult acquire( int p_flags ) {
+	private PluginResult acquire( int p_flags , ) {
 		PluginResult result = null;
 		PowereManger.WakeLock wakeLock;
 		PowerManager powerManager = (PowerManager) cordova.getActivity().getSystemService(Context.POWER_SERVICE);
@@ -118,26 +116,13 @@ public class PowerManagement extends CordovaPlugin {
 		
 		try {
 			wakeLock.acquire();
-			result = new PluginResult(PluginResult.Status.OK);
+			this.watches.put(wakeLock, callbackContext)
+			result = new PluginResult(PluginResult.Status.OK, this.watches.size().toString());
 		}
 		catch( Exception e ) {
 			result = new PluginResult(PluginResult.Status.ERROR,"Can't acquire wake-lock - check your permissions!");
 		}
 		
-		if (this.wakeLock == null) {
-			this.wakeLock = this.powerManager.newWakeLock(p_flags, "PowerManagementPlugin");
-			try {
-				this.wakeLock.acquire();
-				result = new PluginResult(PluginResult.Status.OK);
-			}
-			catch( Exception e ) {
-				this.wakeLock = null;
-				result = new PluginResult(PluginResult.Status.ERROR,"Can't acquire wake-lock - check your permissions!");
-			}
-		}
-		else {
-			result = new PluginResult(PluginResult.Status.ILLEGAL_ACCESS_EXCEPTION,"WakeLock already active - release first");
-		}
 		
 		return result;
 	}
