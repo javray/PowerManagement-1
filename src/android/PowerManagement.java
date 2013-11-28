@@ -75,6 +75,7 @@ public class PowerManagement extends CordovaPlugin {
 				
 			}
 			else if( action.equals("release") ) {
+				String watchId = args.optString(0);
 				result = this.release(watchId);
 			}
 		}
