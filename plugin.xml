@@ -11,7 +11,7 @@
     </engines>
 
     <js-module src="www/powermanagement.js" name="PowerManagement">
-        <clobbers target="cordova.plugins.powerManagement" />
+        <clobbers target="cordova.plugins.PowerManagement" />
     </js-module>
         
     <!-- ios -->
