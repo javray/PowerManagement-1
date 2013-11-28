@@ -43,15 +43,6 @@ public class PowerManagement extends CordovaPlugin {
 	private PowerManager powerManager = null;
 	
 	public HashMap<String, PowerManager.WakeLock> watches = new HashMap<String, CallbackContext>();
-
-
-	/**
-	 * Fetch a reference to the power-service when the plugin is initialized
-	 */
-	@Override
-	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
-		super.initialize(cordova, webView);
-	}
 	
 	@Override
 	public boolean execute(String action, JSONArray args,
@@ -64,34 +55,28 @@ public class PowerManagement extends CordovaPlugin {
 		try {
 			if( action.equals("acquire") ) {
 				String type = args.optString(0);
+				String watchId = args.optString(1);
+				
 				if(type.equals("dim") ) {
 					Log.d("PowerManagementPlugin", "Only dim lock" );
-					result = this.acquire( PowerManager.SCREEN_DIM_WAKE_LOCK);
+					result = this.acquire( PowerManager.SCREEN_DIM_WAKE_LOCK, watchId);
 				}
 				else if(type.equals("partial") ) {
 					Log.d("PowerManagementPlugin", "Only partial lock" );
-					result = this.acquire( PowerManager.PARTIAL_WAKE_LOCK);
+					result = this.acquire( PowerManager.PARTIAL_WAKE_LOCK, watchId);
 				}
 				else if(type.equals("screen") ) {
 					Log.d("PowerManagementPlugin", "Full wakelock with screen" );
-					result = this.acquire( PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP);
+					result = this.acquire( PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, watchId);
 				}
 				else {
 					Log.d("PowerManagementPlugin", "Full wakelock" );
-					result = this.acquire( PowerManager.FULL_WAKE_LOCK );
+					result = this.acquire( PowerManager.FULL_WAKE_LOCK, watchId);
 				}
-					/*
-					if( args.length() > 0 && args.getBoolean(0) ) {
-						Log.d("PowerManagementPlugin", "Only dim lock" );
-						result = this.acquire( PowerManager.SCREEN_DIM_WAKE_LOCK );
-					}
-					else {
-						result = this.acquire( PowerManager.FULL_WAKE_LOCK );
-					}
-					*/
+				
 			}
 			else if( action.equals("release") ) {
-				result = this.release();
+				result = this.release(watchId);
 			}
 		}
 		catch( Exception e ) {
@@ -107,17 +92,17 @@ public class PowerManagement extends CordovaPlugin {
 	 * @param p_flags Type of wake-lock to acquire
 	 * @return PluginResult containing the status of the acquire process
 	 */
-	private PluginResult acquire( int p_flags , ) {
+	private PluginResult acquire( int p_flags , String watchId) {
 		PluginResult result = null;
-		PowereManger.WakeLock wakeLock;
+		PowereManger.WakeLock wakeLock = null;
 		PowerManager powerManager = (PowerManager) cordova.getActivity().getSystemService(Context.POWER_SERVICE);
 		
 		wakeLock = powerManager.newWakeLock(p_flags, "PowerManagementPlugin");
 		
 		try {
 			wakeLock.acquire();
-			this.watches.put(wakeLock, callbackContext)
-			result = new PluginResult(PluginResult.Status.OK, this.watches.size().toString());
+			this.watches.put(watchId, wakeLock);
+			result = new PluginResult(PluginResult.Status.OK, watchId);
 		}
 		catch( Exception e ) {
 			result = new PluginResult(PluginResult.Status.ERROR,"Can't acquire wake-lock - check your permissions!");
@@ -131,12 +116,13 @@ public class PowerManagement extends CordovaPlugin {
 	 * Release an active wake-lock
 	 * @return PluginResult containing the status of the release process
 	 */
-	private PluginResult release() {
+	private PluginResult release(String watchId) {
 		PluginResult result = null;
 		
-		if( this.wakeLock != null && this.wakeLock.isHeld()) {
-			this.wakeLock.release();
-			this.wakeLock = null;
+		if (this.watches.containsKey(watchId)) {
+			PowerManaer.WakeLock = wakeLock = this.watches.get(watchId);
+			wakeLock.release();
+			this.watches.remove(watchId);
 			
 			result = new PluginResult(PluginResult.Status.OK, "OK");
 		}
@@ -145,26 +131,5 @@ public class PowerManagement extends CordovaPlugin {
 		}
 		
 		return result;
-	}
-	
-	/**
-	 * Make sure any wakelock is released if the app goes into pause
-	 */
-	@Override
-	public void onPause(boolean multitasking) {
-		if( this.wakeLock != null && this.wakeLock.isHeld()) {
-			this.wakeLock.release();
-		}
-		super.onPause(multitasking);
-	}
-	
-	/**
-	 * Make sure any wakelock is acquired again once we resume
-	 */
-	@Override
-	public void onResume(boolean multitasking) {
-		if( this.wakeLock != null ) this.wakeLock.acquire();
-
-		super.onResume(multitasking);
 	}
 }
