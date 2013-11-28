@@ -48,7 +48,4 @@
 
 
 	var powerManagement = new PowerManagement();
-	module.exports = {
-		powerManagement: powerManagement,
-		PowerManagenent: PowerManagement
-	};
+	module.exports = PowerManagement;
