@@ -20,6 +20,8 @@
  */
 package org.apache.cordova.plugin;
 
+import java.util.HashMap;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
