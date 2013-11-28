@@ -41,7 +41,7 @@ import org.apache.cordova.PluginResult.Status;
  */
 public class PowerManagement extends CordovaPlugin {
 	
-	public HashMap<String, PowerManager.WakeLock> watches = new HashMap<String, CallbackContext>();
+	public HashMap<String, PowerManager.WakeLock> watches = new HashMap<String, PowerManager.WakeLoc>();
 	
 	@Override
 	public boolean execute(String action, JSONArray args,
