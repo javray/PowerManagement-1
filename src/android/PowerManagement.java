@@ -94,7 +94,7 @@ public class PowerManagement extends CordovaPlugin {
 	 */
 	private PluginResult acquire( int p_flags , String watchId) {
 		PluginResult result = null;
-		PowereManger.WakeLock wakeLock = null;
+		PowerManager.WakeLock wakeLock = null;
 		PowerManager powerManager = (PowerManager) cordova.getActivity().getSystemService(Context.POWER_SERVICE);
 		
 		wakeLock = powerManager.newWakeLock(p_flags, "PowerManagementPlugin");
@@ -120,7 +120,7 @@ public class PowerManagement extends CordovaPlugin {
 		PluginResult result = null;
 		
 		if (this.watches.containsKey(watchId)) {
-			PowerManaer.WakeLock = wakeLock = this.watches.get(watchId);
+			PowerManager.WakeLock = wakeLock = this.watches.get(watchId);
 			wakeLock.release();
 			this.watches.remove(watchId);
 			
