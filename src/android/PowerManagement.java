@@ -41,6 +41,9 @@ public class PowerManagement extends CordovaPlugin {
 	// As we only allow one wake-lock, we keep a reference to it here
 	private PowerManager.WakeLock wakeLock = null;
 	private PowerManager powerManager = null;
+	
+	public HashMap<PowerManager.WakeLock, CallbackContext> watches = new HashMap<PowerManager.WakeLock, CallbackContext>();
+
 
 	/**
 	 * Fetch a reference to the power-service when the plugin is initialized
@@ -108,6 +111,18 @@ public class PowerManagement extends CordovaPlugin {
 	 */
 	private PluginResult acquire( int p_flags ) {
 		PluginResult result = null;
+		PowereManger.WakeLock wakeLock;
+		PowerManager powerManager = (PowerManager) cordova.getActivity().getSystemService(Context.POWER_SERVICE);
+		
+		wakeLock = powerManager.newWakeLock(p_flags, "PowerManagementPlugin");
+		
+		try {
+			wakeLock.acquire();
+			result = new PluginResult(PluginResult.Status.OK);
+		}
+		catch( Exception e ) {
+			result = new PluginResult(PluginResult.Status.ERROR,"Can't acquire wake-lock - check your permissions!");
+		}
 		
 		if (this.wakeLock == null) {
 			this.wakeLock = this.powerManager.newWakeLock(p_flags, "PowerManagementPlugin");
