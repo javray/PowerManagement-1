@@ -75,6 +75,7 @@ public class PowerManagement extends CordovaPlugin {
 				
 			}
 			else if( action.equals("release") ) {
+				
 				String watchId = args.optString(0);
 				result = this.release(watchId);
 			}
@@ -93,6 +94,7 @@ public class PowerManagement extends CordovaPlugin {
 	 * @return PluginResult containing the status of the acquire process
 	 */
 	private PluginResult acquire( int p_flags , String watchId) {
+		Log.d("ACQUIRE->" + watchId);
 		PluginResult result = null;
 		PowerManager.WakeLock wakeLock = null;
 		PowerManager powerManager = (PowerManager) cordova.getActivity().getSystemService(Context.POWER_SERVICE);
@@ -117,6 +119,7 @@ public class PowerManagement extends CordovaPlugin {
 	 * @return PluginResult containing the status of the release process
 	 */
 	private PluginResult release(String watchId) {
+		Log.d("RELEASE->" + watchId);
 		PluginResult result = null;
 		
 		if (this.watches.containsKey(watchId)) {
