@@ -41,7 +41,7 @@ import org.apache.cordova.PluginResult.Status;
  */
 public class PowerManagement extends CordovaPlugin {
 	
-	public HashMap<String, PowerManager.WakeLock> watches = new HashMap<String, PowerManager.WakeLoc>();
+	public HashMap<String, PowerManager.WakeLock> watches = new HashMap<String, PowerManager.WakeLock>();
 	
 	@Override
 	public boolean execute(String action, JSONArray args,
@@ -120,7 +120,7 @@ public class PowerManagement extends CordovaPlugin {
 		PluginResult result = null;
 		
 		if (this.watches.containsKey(watchId)) {
-			PowerManager.WakeLock = wakeLock = this.watches.get(watchId);
+			PowerManager.WakeLock wakeLock = this.watches.get(watchId);
 			wakeLock.release();
 			this.watches.remove(watchId);
 			
